@@ -1,0 +1,395 @@
+local s =
+    setmetatable(
+    {},
+    {
+        __index = function(self, hash)
+            return game:GetService(hash)
+        end
+    }
+)
+getgenv().Pet = false
+getgenv().Food = false
+getgenv().Egg = false
+getgenv().Plant = false
+getgenv().Quest = false
+getgenv().Complete = false
+
+local Selecting
+local FoodZone
+local MyZone
+local function Attack(Enemy)
+    local Pets = s["Players"].LocalPlayer.Character.Pets:GetChildren()
+    for i = 1, #Pets do
+        local MyPet = Pets[i]
+        s["ReplicatedStorage"].Remotes.Functions.CombatRF:InvokeServer("AttackEnemy", Enemy, MyPet)
+    end
+end
+function Hit()
+    spawn(
+        function()
+            while getgenv().Pet == true do
+                wait(1)
+                for i, v in pairs(s["Workspace"].Zones[MyZone].Enemies:GetChildren()) do
+                    if v.Name == Selecting then
+                        Attack(v)
+                    end
+                end
+            end
+        end
+    )
+end
+
+local function CollectFood(Enemy)
+    local Pets = s["Players"].LocalPlayer.Character.Pets:GetChildren()
+    for i = 1, #Pets do
+        local MyPet = Pets[i]
+        s["ReplicatedStorage"].Remotes.Functions.CollectionRF:InvokeServer("CollectFood", Enemy, MyPet)
+    end
+end
+
+local function HitF()
+    spawn(
+        function()
+            while wait(1) do
+                for i, v in pairs(s["Workspace"].Zones["" .. FoodZone .. ""].FoodSpawns:GetChildren()) do
+                    if v.Name == "Part" and getgenv().Food == true then
+                        CollectFood(v)
+                    end
+                end
+            end
+        end
+    )
+end
+
+function EggHatch()
+    spawn(
+        function()
+            while wait(3) do
+                if getgenv().Egg == true then
+                    s["ReplicatedStorage"].Remotes.Events.HatchEggEvent:FireServer()
+                end
+            end
+        end
+    )
+end
+function PlantEgg()
+    spawn(
+        function()
+            while wait(3) do
+                if getgenv().Plant == true then
+                    for a, b in pairs(s["Players"].LocalPlayer.PlayerGui.Plant.Container.ScrollingFrame:GetChildren()) do
+                        if b:IsA("Frame") then
+                            game:GetService("ReplicatedStorage").Remotes.Events.PlantEggEvent:FireServer(b.Name)
+                        end
+                    end
+                end
+            end
+        end
+    )
+end
+function GetQuest()
+    spawn(
+        function()
+            while wait(5) do
+                if getgenv().Quest == true then
+                    local Count = s["Players"].LocalPlayer.PlayerGui.Quests:GetChildren()
+                    if #Count >= 0 then
+                        for i, v in pairs(Count) do
+                            for a, b in pairs(v:GetDescendants()) do
+                                if b.Name == "Select" then
+                                    break
+                                end
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Farmer O'Neill")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Farmer O'Shea")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Professor Carmichael")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Trainee Wesley")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Arne")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Bo")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Scott")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Explorer Jones")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Zenith")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Celestia")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("coll")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Greg")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Jacakal")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Shaquille")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Davy Jones")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Atlantis Warrior")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Trainee")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Zeke")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Solarius")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Trainee Wesley")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Dima")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Axol")
+                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Guardion Knight")
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    )
+end
+
+function ACQ()
+    spawn(
+        function()
+            while wait() do
+                if getgenv().Complete == true then
+                    local Get = s["Players"].LocalPlayer.PlayerGui.Quests:GetChildren()
+                    if #Get >= 1 then
+                        for i, v in pairs(Get) do
+                            for a, b in pairs(v:GetDescendants()) do
+                                if b.Name == "Select" then
+                                    s["ReplicatedStorage"].Remotes.Events.QuestCompleted:FireServer(
+                                        b.Parent.Parent.Name
+                                    )
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    )
+end
+
+local library = loadstring(game:HttpGet(("https://raw.githubusercontent.com/AikaV3rm/UiLib/master/Lib.lua")))()
+
+local w = library:CreateWindow("Pet Swarm Simulator")
+
+local b = w:CreateFolder("Farms")
+
+b:Toggle(
+    "Auto Monster Farm",
+    function(bool)
+        getgenv().Pet = bool
+        if bool then
+            Hit()
+        end
+    end
+)
+
+local DetectTab = {
+    "Evil Foot",
+    "Evil Shroom",
+    "Deermon",
+    "Creepy Cat",
+    "Cursed Mummy",
+    "Enchanted Cobra",
+    "Wicked Wolf",
+    "Evil Frozen Yeti",
+    "Dark Spike",
+    "Evil Ogre",
+    "Creepy Slime",
+    "Deadly Elephant",
+    "Enchanted Macaw",
+    "Dark Cloud",
+    "Crazy Unicorn",
+    "Mad Golum",
+    "Raging Lion",
+    "Forbidden Dragon",
+    "Dark Griffin",
+    "Cursed Medusa",
+    "Evil Minotaur",
+    "Evil Starfish",
+    "Angry Crab",
+    "Deadly Octopus",
+    "Dark Planet",
+    "Vile Bat",
+    "Menacing Sting",
+    "Mad Penguin",
+    "Cursed Moai",
+    "Terror Tree",
+    "Dark Knight",
+    "Rotten Bush",
+    "Deadly Beetle",
+    "Ghost Pirate",
+    "Lava Monster",
+    "Tiki Monster",
+    "Naga"
+}
+local DB =
+    b:Dropdown(
+    "Monster Select",
+    DetectTab,
+    true,
+    function(Selected)
+        Selecting = Selected
+        Find_Zone()
+    end
+)
+
+function Find_Zone()
+    if Selecting == "Evil Foot" or Selecting == "Evil Shroom" or Selecting == "Deermon" then
+        print("Yes")
+        MyZone = "Zone1"
+    else
+        if Selecting == "Creepy Cat" or Selecting == "Cursed Mummy" or Selecting == "Enchanted Cobra" then
+            MyZone = "Zone2"
+        else
+            if Selecting == "Wicked Wolf" or Selecting == "Evil Frozen" or Selecting == "Dark Spike" then
+                MyZone = "Zone3"
+            else
+                if Selecting == "Evil Ogre" or Selecting == "Creepy Slime" or Selecting == "Deadly Elephant" then
+                    MyZone = "Zone4"
+                else
+                    if Selecting == "Enchanted Macaw" or Selecting == "Dark Cloud" or Selecting == "Crazy Unicorn" then
+                        MyZone = "Zone5"
+                    else
+                        if Selecting == "Mad Golum" or Selecting == "Raging Lion" or Selecting == "Forbidden Dragon" then
+                            MyZone = "Zone6"
+                        else
+                            if
+                                Selecting == "Dark Griffin" or Selecting == "Cursed Medusa" or
+                                    Selecting == "Evil Minotaur"
+                             then
+                                MyZone = "Zone7"
+                                if
+                                    Selecting == "Evil Starfish" or Selecting == "Angry Crab" or
+                                        Selecting == "Deadly Octopus"
+                                 then
+                                    MyZone = "Zone8"
+                                    if
+                                        Selecting == "Dark Planet" or Selecting == "Vile Bat" or
+                                            Selecting == "Menacing Sting"
+                                     then
+                                        MyZone = "Zone9"
+                                        if
+                                            Selecting == "Mad Penguin" or Selecting == "Cursed Moai" or
+                                                Selecting == "Terror Tree"
+                                         then
+                                            MyZone = "Zone10"
+                                            if
+                                                Selecting == "Rotten Bush" or Selecting == "Deadly Beetle" or
+                                                    Selecting == "Dark Knight"
+                                             then
+                                                MyZone = "Zone11"
+                                                if Selecting == "Ghost Pirate" then
+                                                    MyZone = "Zone8B1"
+                                                    if Selecting == "Lava Monster" then
+                                                        MyZone = "Zone5B1"
+                                                        if Selecting == "Tiki Monster" then
+                                                            MyZone = "Zone10B1"
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local Zone = Find_Zone()
+
+b:Toggle(
+    "Auto Food Farm",
+    function(bool)
+        getgenv().Food = bool
+        if bool then
+            HitF()
+        end
+    end
+)
+b:Dropdown(
+    "Select Zone",
+    {"Zone1", "Zone2", "Zone3", "Zone4", "Zone5", "Zone6", "Zone7", "Zone8", "Zone9", "Zone10", "Zone11"},
+    true,
+    function(Zone)
+        FoodZone = Zone
+    end
+)
+
+local b2 = w:CreateFolder("Egg")
+b2:Toggle(
+    "Auto Hatch Egg",
+    function(bool)
+        getgenv().Egg = bool
+        if bool then
+            EggHatch()
+        end
+    end
+)
+b2:Toggle(
+    "Auto Plant Egg",
+    function(bool)
+        getgenv().Plant = bool
+        if bool then
+            PlantEgg()
+        end
+    end
+)
+b2:Slider(
+    "WalkSpeed",
+    {
+        min = 10, -- min value of the slider
+        max = 200, -- max value of the slider
+        precise = true -- max 2 decimals
+    },
+    function(value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end
+)
+
+b2:Slider(
+    "JumpPower",
+    {
+        min = 10, -- min value of the slider
+        max = 200, -- max value of the slider
+        precise = true -- max 2 decimals
+    },
+    function(value)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
+    end
+)
+
+local b3 = w:CreateFolder("Auto Buy/Get")
+b3:Toggle(
+    "Auto Quest",
+    function(bool)
+        getgenv().Quest = bool
+        if bool then
+            GetQuest()
+        end
+    end
+)
+b3:Toggle(
+    "Auto Complete Quest",
+    function(bool)
+        getgenv().Complete = bool
+        if bool then
+            ACQ()
+        end
+    end
+)
+b3:Button(
+    "Reedem All Codes",
+    function()
+        local function GetCodes()
+            for i, v in pairs(game:GetService("Players").LocalPlayer["PlayerData_Client"].Codes:GetDescendants()) do
+                if v:IsA("BoolValue") then
+                    game:GetService("ReplicatedStorage").Remotes.Functions.EnterCode:InvokeServer(v.Name)
+                end
+            end
+        end
+
+        GetCodes()
+    end
+)
+b3:DestroyGui()
+
+b3:Label(
+    "Made By:efeeee#8151",
+    {
+        TextSize = 13, -- Self Explaining
+        TextColor = Color3.fromRGB(255, 255, 255), -- Self Explaining
+        BgColor = Color3.fromRGB(35, 35, 35) -- Self Explaining
+    }
+)
