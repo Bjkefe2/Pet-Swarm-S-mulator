@@ -245,30 +245,37 @@ function Find_Zone()
                                     Selecting == "Evil Minotaur"
                              then
                                 MyZone = "Zone7"
+                            else
                                 if
                                     Selecting == "Evil Starfish" or Selecting == "Angry Crab" or
                                         Selecting == "Deadly Octopus"
                                  then
                                     MyZone = "Zone8"
+                                else
                                     if
                                         Selecting == "Dark Planet" or Selecting == "Vile Bat" or
                                             Selecting == "Menacing Sting"
                                      then
                                         MyZone = "Zone9"
+                                    else
                                         if
                                             Selecting == "Mad Penguin" or Selecting == "Cursed Moai" or
                                                 Selecting == "Terror Tree"
                                          then
                                             MyZone = "Zone10"
+                                        else
                                             if
                                                 Selecting == "Rotten Bush" or Selecting == "Deadly Beetle" or
                                                     Selecting == "Dark Knight"
                                              then
                                                 MyZone = "Zone11"
+                                            else
                                                 if Selecting == "Ghost Pirate" then
                                                     MyZone = "Zone8B1"
+                                                else
                                                     if Selecting == "Lava Monster" then
                                                         MyZone = "Zone5B1"
+                                                    else
                                                         if Selecting == "Tiki Monster" then
                                                             MyZone = "Zone10B1"
                                                         end
