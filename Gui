@@ -13,10 +13,14 @@ getgenv().Egg = false
 getgenv().Plant = false
 getgenv().Quest = false
 getgenv().Complete = false
-
+getgenv().SellPet = false
 local Selecting
 local FoodZone
 local MyZone
+
+
+
+
 local function Attack(Enemy)
     local Pets = s["Players"].LocalPlayer.Character.Pets:GetChildren()
     for i = 1, #Pets do
@@ -38,6 +42,21 @@ function Hit()
         end
     )
 end
+function SellPet()
+    spawn(function()
+        while getgenv().SellPet == true do
+            wait()
+            for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.Pets.Container.Center.Inner.Frame.Frame.ScrollingFrame:GetDescendants()) do
+                if v.Name == "DamageLabel"  and  v.Parent.Parent:FindFirstChild("Image").BackgroundColor3  ~= Color3.new(170/255,255/255,127/255) then 
+                game:GetService("ReplicatedStorage").Remotes.Events.SellMonsterEvent:FireServer(v.Parent.Parent.Parent.Name)
+              end
+           end
+        end
+    end)
+end
+
+
+
 
 local function CollectFood(Enemy)
     local Pets = s["Players"].LocalPlayer.Character.Pets:GetChildren()
@@ -87,6 +106,10 @@ function PlantEgg()
         end
     )
 end
+
+
+
+
 function GetQuest()
     spawn(
         function()
@@ -333,6 +356,13 @@ b2:Toggle(
         end
     end
 )
+
+b2:Toggle("AutoSellPet(Not Best)",function(bool)
+    getgenv().SellPet = bool
+    if bool then 
+        SellPet()
+    end
+end)
 b2:Slider(
     "WalkSpeed",
     {
@@ -376,6 +406,7 @@ b3:Toggle(
         end
     end
 )
+
 b3:Button(
     "Reedem All Codes",
     function()
