@@ -1,12 +1,4 @@
-local s =
-    setmetatable(
-    {},
-    {
-        __index = function(self, hash)
-            return game:GetService(hash)
-        end
-    }
-)
+
 getgenv().Pet = false
 getgenv().Food = false
 getgenv().Egg = false
