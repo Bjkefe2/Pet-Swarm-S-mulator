@@ -22,10 +22,10 @@ local MyZone
 
 
 local function Attack(Enemy)
-    local Pets = s["Players"].LocalPlayer.Character.Pets:GetChildren()
+    local Pets = game.Players.LocalPlayer.Character.Pets:GetChildren()
     for i = 1, #Pets do
         local MyPet = Pets[i]
-        s["ReplicatedStorage"].Remotes.Functions.CombatRF:InvokeServer("AttackEnemy", Enemy, MyPet)
+        game.ReplicatedStorage.Remotes.Functions.CombatRF:InvokeServer("AttackEnemy", Enemy, MyPet)
     end
 end
 function Hit()
@@ -33,7 +33,7 @@ function Hit()
         function()
             while getgenv().Pet == true do
                 wait(1)
-                for i, v in pairs(s["Workspace"].Zones[MyZone].Enemies:GetChildren()) do
+                for i, v in pairs(game.Workspace.Zones[MyZone].Enemies:GetChildren()) do
                     if v.Name == Selecting then
                         Attack(v)
                     end
@@ -59,10 +59,10 @@ end
 
 
 local function CollectFood(Enemy)
-    local Pets = s["Players"].LocalPlayer.Character.Pets:GetChildren()
+    local Pets = game.Players.LocalPlayer.Character.Pets:GetChildren()
     for i = 1, #Pets do
         local MyPet = Pets[i]
-        s["ReplicatedStorage"].Remotes.Functions.CollectionRF:InvokeServer("CollectFood", Enemy, MyPet)
+        game.ReplicatedStorage.Remotes.Functions.CollectionRF:InvokeServer("CollectFood", Enemy, MyPet)
     end
 end
 
@@ -70,7 +70,7 @@ local function HitF()
     spawn(
         function()
             while wait(1) do
-                for i, v in pairs(s["Workspace"].Zones["" .. FoodZone .. ""].FoodSpawns:GetChildren()) do
+                for i, v in pairs(game.Workspace.Zones["" .. FoodZone .. ""].FoodSpawns:GetChildren()) do
                     if v.Name == "Part" and getgenv().Food == true then
                         CollectFood(v)
                     end
@@ -85,7 +85,7 @@ function EggHatch()
         function()
             while wait(3) do
                 if getgenv().Egg == true then
-                    s["ReplicatedStorage"].Remotes.Events.HatchEggEvent:FireServer()
+                    game.ReplicatedStorage.Remotes.Events.HatchEggEvent:FireServer()
                 end
             end
         end
@@ -96,7 +96,7 @@ function PlantEgg()
         function()
             while wait(3) do
                 if getgenv().Plant == true then
-                    for a, b in pairs(s["Players"].LocalPlayer.PlayerGui.Plant.Container.ScrollingFrame:GetChildren()) do
+                    for a, b in pairs(game.Players.LocalPlayer.PlayerGui.Plant.Container.ScrollingFrame:GetChildren()) do
                         if b:IsA("Frame") then
                             game:GetService("ReplicatedStorage").Remotes.Events.PlantEggEvent:FireServer(b.Name)
                         end
@@ -115,36 +115,36 @@ function GetQuest()
         function()
             while wait(5) do
                 if getgenv().Quest == true then
-                    local Count = s["Players"].LocalPlayer.PlayerGui.Quests:GetChildren()
+                    local Count = game.Players.LocalPlayer.PlayerGui.Quests:GetChildren()
                     if #Count >= 0 then
                         for i, v in pairs(Count) do
                             for a, b in pairs(v:GetDescendants()) do
                                 if b.Name == "Select" then
                                     break
                                 end
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Farmer O'Neill")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Farmer O'Shea")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Professor Carmichael")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Trainee Wesley")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Arne")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Bo")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Scott")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Explorer Jones")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Zenith")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Celestia")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("coll")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Greg")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Jacakal")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Shaquille")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Davy Jones")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Atlantis Warrior")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Trainee")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Zeke")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Solarius")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Trainee Wesley")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Dima")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Axol")
-                                s["ReplicatedStorage"].Remotes.Events.GiveQuest:FireServer("Guardion Knight")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Farmer O'Neill")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Farmer O'Shea")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Professor Carmichael")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Trainee Wesley")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Arne")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Bo")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Scott")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Explorer Jones")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Zenith")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Celestia")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("coll")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Greg")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Jacakal")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Shaquille")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Davy Jones")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Atlantis Warrior")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Trainee")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Zeke")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Solarius")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Trainee Wesley")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Dima")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Axol")
+                                game.ReplicatedStorage.Remotes.Events.GiveQuest:FireServer("Guardion Knight")
                             end
                         end
                     end
@@ -159,12 +159,12 @@ function ACQ()
         function()
             while wait() do
                 if getgenv().Complete == true then
-                    local Get = s["Players"].LocalPlayer.PlayerGui.Quests:GetChildren()
+                    local Get = game.Players.LocalPlayer.PlayerGui.Quests:GetChildren()
                     if #Get >= 1 then
                         for i, v in pairs(Get) do
                             for a, b in pairs(v:GetDescendants()) do
                                 if b.Name == "Select" then
-                                    s["ReplicatedStorage"].Remotes.Events.QuestCompleted:FireServer(
+                                    game.ReplicatedStorage.Remotes.Events.QuestCompleted:FireServer(
                                         b.Parent.Parent.Name
                                     )
                                 end
